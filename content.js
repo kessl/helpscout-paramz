@@ -9,10 +9,21 @@ function isValidUrl(string) {
   }
 }
 
-function addUtmParameter(url) {
+function addUtmParameters(url, utmParams) {
   try {
     const urlObj = new URL(url);
-    urlObj.searchParams.set('utm_content', 'added-on-paste');
+    
+    // Parse UTM parameters from string like "utm_content=added-on-paste&utm_source=helpscout"
+    if (utmParams) {
+      const params = new URLSearchParams(utmParams);
+      for (const [key, value] of params) {
+        urlObj.searchParams.set(key, value);
+      }
+    } else {
+      // Fallback to default
+      urlObj.searchParams.set('utm_content', 'added-on-paste');
+    }
+    
     return urlObj.toString();
   } catch (e) {
     return url;
@@ -28,19 +39,22 @@ async function handlePaste(event) {
   const pastedData = clipboardData.getData('text/plain');
   
   if (pastedData && isValidUrl(pastedData.trim())) {
-    const modifiedUrl = addUtmParameter(pastedData.trim());
-    
     event.preventDefault();
     isProcessingPaste = true;
     
-    await navigator.clipboard.writeText(modifiedUrl);
-    
-    setTimeout(() => {
-      document.execCommand('paste');
-      setTimeout(() => {
-        isProcessingPaste = false;
-      }, 100);
-    }, 10);
+    // Get saved UTM parameters
+    chrome.storage.sync.get(['utmParams'], function(result) {
+      const modifiedUrl = addUtmParameters(pastedData.trim(), result.utmParams);
+      
+      navigator.clipboard.writeText(modifiedUrl).then(() => {
+        setTimeout(() => {
+          document.execCommand('paste');
+          setTimeout(() => {
+            isProcessingPaste = false;
+          }, 100);
+        }, 10);
+      });
+    });
   }
 }
 
