@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Boo Extension",
+  "version": "1.0",
+  "description": "A minimal Chrome extension that alerts 'Boo'",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": []
+}
