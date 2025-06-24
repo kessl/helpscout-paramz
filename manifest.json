@@ -1,10 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "Boo Extension",
+  "name": "UTM Paster",
   "version": "1.0",
-  "description": "A minimal Chrome extension that alerts 'Boo'",
+  "description": "Automatically adds UTM parameters to pasted links on HelpScout",
   "action": {
     "default_popup": "popup.html"
   },
-  "permissions": []
+  "permissions": [
+    "clipboardRead",
+    "clipboardWrite"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://secure.helpscout.net/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }
