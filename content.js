@@ -13,18 +13,17 @@ function addUtmParameters(url, utmParams) {
   try {
     const urlObj = new URL(url);
     
-    // Parse UTM parameters from string like "utm_content=added-on-paste&utm_source=helpscout"
-    if (utmParams) {
+    // Parse UTM parameters from string like "utm_content=slay&utm_source=vibes"
+    if (utmParams && utmParams.trim()) {
       const params = new URLSearchParams(utmParams);
       for (const [key, value] of params) {
         urlObj.searchParams.set(key, value);
       }
-    } else {
-      // Fallback to default
-      urlObj.searchParams.set('utm_content', 'added-on-paste');
+      return urlObj.toString();
     }
     
-    return urlObj.toString();
+    // If no params set, return original URL unchanged
+    return url;
   } catch (e) {
     return url;
   }
