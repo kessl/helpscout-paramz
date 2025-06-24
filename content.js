@@ -42,15 +42,20 @@ async function handlePaste(event) {
     event.preventDefault();
     isProcessingPaste = true;
     
+    const originalUrl = pastedData.trim();
+    
     // Get saved UTM parameters
     chrome.storage.sync.get(['utmParams'], function(result) {
-      const modifiedUrl = addUtmParameters(pastedData.trim(), result.utmParams);
+      const modifiedUrl = addUtmParameters(originalUrl, result.utmParams);
       
       navigator.clipboard.writeText(modifiedUrl).then(() => {
         setTimeout(() => {
           document.execCommand('paste');
           setTimeout(() => {
-            isProcessingPaste = false;
+            // Restore original clipboard content
+            navigator.clipboard.writeText(originalUrl).then(() => {
+              isProcessingPaste = false;
+            });
           }, 100);
         }, 10);
       });
