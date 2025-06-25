@@ -24,8 +24,13 @@ A Chrome extension that automatically adds custom UTM parameters to URLs when yo
 
 3. **Load the extension**
    - Click **Load unpacked**
-   - Select the `utm-paster` folder you downloaded
+   - Select the `helpscout-paramz-v0.1` folder you downloaded
    - The extension icon should appear in your toolbar
+
+4. **Add icon to toolbar (if not visible)**
+   - If the extension icon doesn't appear automatically, click the puzzle piece icon (🧩) in your Chrome toolbar
+   - Find "UTM Paster" in the extensions list
+   - Click the pin icon to add it to your toolbar
 
 ## Usage
 
